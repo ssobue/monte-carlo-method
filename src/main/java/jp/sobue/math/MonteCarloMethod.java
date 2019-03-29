@@ -1,5 +1,6 @@
 package jp.sobue.math;
 
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.LongStream;
 
 /**
@@ -13,10 +14,10 @@ public class MonteCarloMethod {
   private static final long MAX_ITERATION = 10_000_000_000L;
 
   /** 円の範囲内とカウントされた回数. */
-  private static long insideCircleCnt = 0L;
+  private static AtomicLong insideCircleCnt = new AtomicLong(0L);
 
   /** 円の範囲外とカウントされた回数. */
-  private static long outsideCircleCnt = 0L;
+  private static AtomicLong outsideCircleCnt = new AtomicLong(0L);
 
   /**
    * Main method.
@@ -25,21 +26,22 @@ public class MonteCarloMethod {
    */
   public static void main(String[] args) {
     LongStream.range(0L, MAX_ITERATION)
+        .parallel()
         .forEach(
             i -> {
               if (isInsideCircle(Math.random(), Math.random())) {
-                insideCircleCnt++;
+                insideCircleCnt.incrementAndGet();
               } else {
-                outsideCircleCnt++;
+                outsideCircleCnt.incrementAndGet();
               }
             });
 
     // 結果表示
     System.out.println("Iteration = " + MAX_ITERATION);
-    System.out.println("Inside = " + insideCircleCnt);
-    System.out.println("Outside = " + outsideCircleCnt);
+    System.out.println("Inside = " + insideCircleCnt.get());
+    System.out.println("Outside = " + outsideCircleCnt.get());
 
-    System.out.println("PI = " + ((double) insideCircleCnt / (double) MAX_ITERATION) * 4.0);
+    System.out.println("PI = " + ((double) insideCircleCnt.get() / (double) MAX_ITERATION) * 4.0);
   }
 
   /**
