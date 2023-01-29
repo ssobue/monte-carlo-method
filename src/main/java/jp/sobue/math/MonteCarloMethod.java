@@ -11,13 +11,13 @@ import java.util.stream.LongStream;
 public class MonteCarloMethod {
 
   /** 繰り返し回数. */
-  private static final long MAX_ITERATION = 10_000_000_000L;
+  private static final long MAX_ITERATION = 100_000_000L;
 
   /** 円の範囲内とカウントされた回数. */
-  private static AtomicLong insideCircleCnt = new AtomicLong(0L);
+  private static final AtomicLong insideCircleCnt = new AtomicLong(0L);
 
   /** 円の範囲外とカウントされた回数. */
-  private static AtomicLong outsideCircleCnt = new AtomicLong(0L);
+  private static final AtomicLong outsideCircleCnt = new AtomicLong(0L);
 
   /**
    * Main method.

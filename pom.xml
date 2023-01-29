@@ -11,7 +11,7 @@
 
     <developers>
         <developer>
-        <name>Sho Sobue</name>
+        <name>SOBUE Sho</name>
         <url>https://github.com/ssobue</url>
         </developer>
     </developers>
@@ -24,16 +24,16 @@
     </scm>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
         <!-- Plugin Version -->
-        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
-        <maven-pmd-plugin.version>3.11.0</maven-pmd-plugin.version>
-        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
+        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
+        <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
+        <maven-pmd-plugin.version>3.20.0</maven-pmd-plugin.version>
+        <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
     </properties>
 
     <distributionManagement>
@@ -86,7 +86,7 @@
                         </goals>
                         <configuration>
                             <configLocation>google_checks.xml</configLocation>
-                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
                             <failsOnError>true</failsOnError>
                         </configuration>
                     </execution>
