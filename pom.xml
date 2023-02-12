@@ -17,7 +17,7 @@
     </developers>
 
     <scm>
-        <url>http://github.com/ssobue/monte-carlo-method</url>
+        <url>https://github.com/ssobue/monte-carlo-method</url>
         <connection>scm:git:https://github.com/ssobue/monte-carlo-method.git</connection>
         <developerConnection>scm:git:ssh://github.com:ssobue/monte-carlo-method.git</developerConnection>
         <tag>HEAD</tag>
