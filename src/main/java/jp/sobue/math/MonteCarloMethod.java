@@ -1,5 +1,6 @@
 package jp.sobue.math;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.LongStream;
 
@@ -29,7 +30,9 @@ public class MonteCarloMethod {
         .parallel()
         .forEach(
             i -> {
-              if (isInsideCircle(Math.random(), Math.random())) {
+              double x = ThreadLocalRandom.current().nextDouble();
+              double y = ThreadLocalRandom.current().nextDouble();
+              if (isInsideCircle(x, y)) {
                 insideCircleCnt.incrementAndGet();
               } else {
                 outsideCircleCnt.incrementAndGet();
