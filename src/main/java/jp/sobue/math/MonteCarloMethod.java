@@ -51,8 +51,24 @@ public class MonteCarloMethod {
    * @param y y-value
    * @return 円の範囲内か
    */
-  private static boolean isInsideCircle(double x, double y) {
+  static boolean isInsideCircle(double x, double y) {
     // √(x^2 + y^2)が1以下
     return Math.sqrt((x * x) + (y * y)) <= 1.0;
+  }
+
+  /**
+   * 指定回数で円周率を計算する.
+   *
+   * @param iteration 繰り返し回数
+   * @return 計算した円周率
+   */
+  static double calculatePi(long iteration) {
+    long inside = 0L;
+    for (long i = 0; i < iteration; i++) {
+      if (isInsideCircle(Math.random(), Math.random())) {
+        inside++;
+      }
+    }
+    return ((double) inside / (double) iteration) * 4.0;
   }
 }
