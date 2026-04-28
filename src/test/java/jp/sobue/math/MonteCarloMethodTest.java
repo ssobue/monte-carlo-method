@@ -10,6 +10,18 @@ import org.junit.jupiter.api.Test;
 class MonteCarloMethodTest {
 
   @Test
+  @DisplayName("Run application: a command-line iteration override should execute the logged result flow")
+  void runApplication() {
+    MonteCarloMethod.main(new String[] {"1"});
+  }
+
+  @Test
+  @DisplayName("Create calculator: the default constructor should be available for package-level use")
+  void createCalculator() {
+    new MonteCarloMethod();
+  }
+
+  @Test
   @DisplayName("Check circle inclusion: points at the origin are inside and diagonal edge points are outside")
   void checkCircleInclusion() {
     assertTrue(MonteCarloMethod.isInsideCircle(0.0, 0.0));

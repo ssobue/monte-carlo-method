@@ -24,10 +24,11 @@ public class MonteCarloMethod {
   /**
    * Main method.
    *
-   * @param args Command line arguments.
+   * @param args Command line arguments. The first argument can override the iteration count.
    */
   public static void main(String[] args) {
-    Result result = calculate(MAX_ITERATION);
+    long iteration = args.length == 0 ? MAX_ITERATION : Long.parseLong(args[0]);
+    Result result = calculate(iteration);
 
     // 結果表示
     LOGGER.info("Iteration = {}", result.iteration());
