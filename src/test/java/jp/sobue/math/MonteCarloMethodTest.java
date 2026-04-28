@@ -2,6 +2,8 @@ package jp.sobue.math;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,13 +14,15 @@ class MonteCarloMethodTest {
   @Test
   @DisplayName("Run application: a command-line iteration override should execute the logged result flow")
   void runApplication() {
-    MonteCarloMethod.main(new String[] {"1"});
+    assertDoesNotThrow(() -> MonteCarloMethod.main(new String[] {"1"}));
   }
 
   @Test
   @DisplayName("Create calculator: the default constructor should be available for package-level use")
   void createCalculator() {
-    new MonteCarloMethod();
+    MonteCarloMethod calculator = new MonteCarloMethod();
+
+    assertNotNull(calculator);
   }
 
   @Test
