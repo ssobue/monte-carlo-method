@@ -11,7 +11,8 @@ monte-carlo-method/
   │   └── jp/sobue/math/MonteCarloMethod.java
   └── .github/         # CI settings (GitHub Actions)
 ```
-GitHub Actions runs `mvn --batch-mode verify` on each push.
+GitHub Actions runs `mvn --batch-mode verify` with SonarQube Cloud analysis on
+each push and pull request.
 
 ## Main Components
 ### MonteCarloMethod.java
@@ -23,8 +24,9 @@ GitHub Actions runs `mvn --batch-mode verify` on each push.
   value of Pi.
 
 ### pom.xml
-- Uses Java 21.
+- Uses Java 25.
 - Includes Checkstyle and PMD for static analysis.
+- Includes SonarQube Cloud project properties for CI analysis.
 - `exec-maven-plugin` executes `MonteCarloMethod` during the `verify` phase.
 
 ## Key Points
@@ -35,7 +37,8 @@ GitHub Actions runs `mvn --batch-mode verify` on each push.
    - Coding standards are enforced with Checkstyle and PMD. Builds fail if
      violations remain.
 3. **Continuous Integration**
-   - GitHub Actions automatically runs the Maven build on each push.
+   - GitHub Actions automatically runs the Maven build and SonarQube Cloud
+     analysis on each push and pull request.
 4. **Code Size**
    - Only one Java file is included, making it easy to understand the project
      quickly.

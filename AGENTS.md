@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `pom.xml`: Maven configuration (Java 21, Checkstyle, PMD, Surefire, Exec).
+- `pom.xml`: Maven configuration (Java 25, Checkstyle, PMD, Surefire, Exec).
 - `src/main/java/jp/sobue/math/MonteCarloMethod.java`: Main implementation.
 - `src/test/java/...`: JUnit 5 tests (add here).
 - `.github/workflows/main.yaml`: CI runs `mvn --batch-mode verify`.
@@ -15,7 +15,7 @@
 - Run app during development: `mvn -q exec:java`
 - Static analysis only: `mvn -q checkstyle:check pmd:check`
 
-Prerequisite: Use JDK 21 (`actions/setup-java@v4` sets this in CI).
+Prerequisite: Use JDK 25 (`actions/setup-java@v5` sets this in CI).
 
 ## Coding Style & Naming Conventions
 - Style enforced by Checkstyle (Google checks) and PMD; builds fail on violations.
@@ -37,4 +37,5 @@ Prerequisite: Use JDK 21 (`actions/setup-java@v4` sets this in CI).
 
 ## Notes on Performance & CI
 - Monte Carlo runs can be CPU-intensive; prefer smaller trial counts locally when iterating.
-- CI executes `mvn --batch-mode verify` on push; keep builds quick and deterministic.
+- CI executes `mvn --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar`
+  on push and pull requests; keep builds quick and deterministic.

@@ -1,7 +1,9 @@
 package jp.sobue.math;
 
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.LongStream;
+import java.security.SecureRandom;
+import java.util.random.RandomGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * モンテカルロ法で円周率を出す.
@@ -10,14 +12,14 @@ import java.util.stream.LongStream;
  */
 public class MonteCarloMethod {
 
+  /** ロガー. */
+  private static final Logger LOGGER = LoggerFactory.getLogger(MonteCarloMethod.class);
+
+  /** 乱数生成器. */
+  private static final RandomGenerator RANDOM = new SecureRandom();
+
   /** 繰り返し回数. */
   private static final long MAX_ITERATION = 100_000_000L;
-
-  /** 円の範囲内とカウントされた回数. */
-  private static final AtomicLong insideCircleCnt = new AtomicLong(0L);
-
-  /** 円の範囲外とカウントされた回数. */
-  private static final AtomicLong outsideCircleCnt = new AtomicLong(0L);
 
   /**
    * Main method.
@@ -25,23 +27,14 @@ public class MonteCarloMethod {
    * @param args Command line arguments.
    */
   public static void main(String[] args) {
-    LongStream.range(0L, MAX_ITERATION)
-        .parallel()
-        .forEach(
-            i -> {
-              if (isInsideCircle(Math.random(), Math.random())) {
-                insideCircleCnt.incrementAndGet();
-              } else {
-                outsideCircleCnt.incrementAndGet();
-              }
-            });
+    Result result = calculate(MAX_ITERATION);
 
     // 結果表示
-    System.out.println("Iteration = " + MAX_ITERATION);
-    System.out.println("Inside = " + insideCircleCnt.get());
-    System.out.println("Outside = " + outsideCircleCnt.get());
+    LOGGER.info("Iteration = {}", result.iteration());
+    LOGGER.info("Inside = {}", result.inside());
+    LOGGER.info("Outside = {}", result.outside());
 
-    System.out.println("PI = " + ((double) insideCircleCnt.get() / (double) MAX_ITERATION) * 4.0);
+    LOGGER.info("PI = {}", result.pi());
   }
 
   /**
@@ -63,12 +56,39 @@ public class MonteCarloMethod {
    * @return 計算した円周率
    */
   static double calculatePi(long iteration) {
+    return calculate(iteration).pi();
+  }
+
+  /**
+   * 指定回数でモンテカルロ法を実行する.
+   *
+   * @param iteration 繰り返し回数
+   * @return 計算結果
+   */
+  static Result calculate(long iteration) {
     long inside = 0L;
     for (long i = 0; i < iteration; i++) {
-      if (isInsideCircle(Math.random(), Math.random())) {
+      if (isInsideCircle(RANDOM.nextDouble(), RANDOM.nextDouble())) {
         inside++;
       }
     }
-    return ((double) inside / (double) iteration) * 4.0;
+    return new Result(iteration, inside);
+  }
+
+  /**
+   * モンテカルロ法の計算結果.
+   *
+   * @param iteration 繰り返し回数
+   * @param inside 円の範囲内とカウントされた回数
+   */
+  record Result(long iteration, long inside) {
+
+    long outside() {
+      return iteration - inside;
+    }
+
+    double pi() {
+      return ((double) inside / (double) iteration) * 4.0;
+    }
   }
 }
