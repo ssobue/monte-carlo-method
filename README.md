@@ -11,7 +11,7 @@ project written in Java.
 monte-carlo-method/
   ├── pom.xml          # Maven build configuration
   ├── src/main/java/   # Java source code
-  │   └── jp/sobue/math/MonteCarloMethod.java
+  │   └── dev/sobue/math/MonteCarloMethod.java
   └── .github/         # CI settings (GitHub Actions)
 ```
 GitHub Actions runs `mvn --batch-mode verify` with SonarQube Cloud analysis on

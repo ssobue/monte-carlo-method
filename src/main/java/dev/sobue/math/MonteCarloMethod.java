@@ -1,4 +1,4 @@
-package jp.sobue.math;
+package dev.sobue.math;
 
 import java.security.SecureRandom;
 import java.util.random.RandomGenerator;
