@@ -37,5 +37,5 @@ Prerequisite: Use JDK 25 (`actions/setup-java@v5` sets this in CI).
 
 ## Notes on Performance & CI
 - Monte Carlo runs can be CPU-intensive; prefer smaller trial counts locally when iterating.
-- CI executes `mvn --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar`
-  on push and pull requests; keep builds quick and deterministic.
+- CI executes `mvn --batch-mode verify` on push and pull requests, and runs SonarCloud
+  analysis only when the workflow has a usable token; keep builds quick and deterministic.
