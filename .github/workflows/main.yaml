@@ -28,7 +28,7 @@ jobs:
       - name: Build with Maven
         run: mvn --batch-mode verify
       - name: Analyze with SonarCloud
-        if: ${{ github.actor != 'dependabot[bot]' && env.SONAR_TOKEN != '' }}
+        if: ${{ env.SONAR_TOKEN != '' && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mvn --batch-mode org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
