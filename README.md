@@ -1,7 +1,7 @@
 # Monte Carlo Method
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ssobue_monte-carlo-method&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ssobue_monte-carlo-method&branch=master)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ssobue_monte-carlo-method&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ssobue_monte-carlo-method&branch=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ssobue_monte-carlo-method&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ssobue_monte-carlo-method&branch=main)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ssobue_monte-carlo-method&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ssobue_monte-carlo-method&branch=main)
 
 This project estimates Pi using the Monte Carlo method. It is a compact Maven
 project written in Java.
