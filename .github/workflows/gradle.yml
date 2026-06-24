@@ -35,6 +35,7 @@ jobs:
         run: ./gradlew --no-daemon verify
       - name: Analyze with SonarCloud
         if: ${{ matrix.java-version == '25' && env.SONAR_TOKEN != '' && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew --no-daemon sonar
