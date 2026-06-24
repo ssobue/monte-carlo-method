@@ -3,44 +3,46 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ssobue_monte-carlo-method&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ssobue_monte-carlo-method&branch=main)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ssobue_monte-carlo-method&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ssobue_monte-carlo-method&branch=main)
 
-This project estimates Pi using the Monte Carlo method. It is a compact Maven
+This project estimates Pi using the Monte Carlo method. It is a compact Gradle
 project written in Java.
 
 ## Repository Structure
 ```
 monte-carlo-method/
-  ├── pom.xml          # Maven build configuration
+  ├── build.gradle     # Gradle build configuration
+  ├── settings.gradle  # Gradle project settings
+  ├── gradlew          # Gradle Wrapper script
   ├── src/main/java/   # Java source code
   │   └── dev/sobue/math/MonteCarloMethod.java
   └── .github/         # CI settings (GitHub Actions)
 ```
-GitHub Actions runs `mvn --batch-mode verify` with SonarQube Cloud analysis on
+GitHub Actions runs `./gradlew --no-daemon verify` with SonarQube Cloud analysis on
 each push and pull request.
 
 ## Main Components
 ### MonteCarloMethod.java
 - Performs 100,000,000 random trials.
-- Counts how many points fall inside or outside the unit circle using
-  `AtomicLong`.
-- The trials run with Java's parallel streams.
+- Counts how many points fall inside or outside the unit circle.
 - After execution it prints the total iterations, counts, and the estimated
   value of Pi.
 
-### pom.xml
+### build.gradle
 - Uses Java 25.
 - Includes Checkstyle and PMD for static analysis.
 - Includes SonarQube Cloud project properties for CI analysis.
-- `exec-maven-plugin` executes `MonteCarloMethod` during the `verify` phase.
+- `verify` executes `MonteCarloMethod` after the standard Gradle checks.
 
 ## Key Points
 1. **Build and Run**
-   - Execute `mvn verify` to compile the code, run Checkstyle/PMD, and run
+   - Execute `./gradlew verify` to compile the code, run Checkstyle/PMD, and run
      `MonteCarloMethod`.
+   - Execute `./gradlew run --args='100000'` to run the app with a custom
+     iteration count.
 2. **Development Style**
    - Coding standards are enforced with Checkstyle and PMD. Builds fail if
      violations remain.
 3. **Continuous Integration**
-   - GitHub Actions automatically runs the Maven build and SonarQube Cloud
+   - GitHub Actions automatically runs the Gradle build and SonarQube Cloud
      analysis on each push and pull request.
 4. **Code Size**
    - Only one Java file is included, making it easy to understand the project
@@ -56,6 +58,6 @@ each push and pull request.
 - **CI/CD Workflow** – The GitHub Actions workflow is minimal and can be
   extended to include tests or artifact publishing.
 
-Start by reading `pom.xml` and `MonteCarloMethod.java`, then run `mvn verify` to
+Start by reading `build.gradle` and `MonteCarloMethod.java`, then run `./gradlew verify` to
 see the project in action. The code base is small, so getting familiar with it
 should not take long.

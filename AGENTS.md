@@ -1,19 +1,21 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `pom.xml`: Maven configuration (Java 25, Checkstyle, PMD, Surefire, Exec).
+- `build.gradle`: Gradle configuration (Java 25, Checkstyle, PMD, Jacoco, Sonar).
+- `settings.gradle`: Gradle project settings and repository policy.
+- `gradle/wrapper/`: Gradle Wrapper files; use `./gradlew` for local and CI builds.
 - `src/main/java/dev/sobue/math/MonteCarloMethod.java`: Main implementation.
 - `src/test/java/...`: JUnit 5 tests (add here).
-- `.github/workflows/main.yaml`: CI runs `mvn --batch-mode verify`.
-- `target/`: Build artifacts (generated).
+- `.github/workflows/main.yaml`: CI runs `./gradlew --no-daemon verify`.
+- `build/`: Build artifacts (generated).
 
 ## Build, Test, and Development Commands
-- Build and run: `mvn clean verify`
-  - Compiles, runs Checkstyle/PMD, executes tests, and runs the app via exec plugin.
-- Run only tests: `mvn test`
-- Package (skip tests): `mvn -DskipTests package`
-- Run app during development: `mvn -q exec:java`
-- Static analysis only: `mvn -q checkstyle:check pmd:check`
+- Build and run: `./gradlew clean verify`
+  - Compiles, runs Checkstyle/PMD, executes tests, and runs the app entry point.
+- Run only tests: `./gradlew test`
+- Package: `./gradlew assemble`
+- Run app during development: `./gradlew run --args='100000'`
+- Static analysis only: `./gradlew checkstyleMain checkstyleTest pmdMain pmdTest`
 
 Prerequisite: Use JDK 25 (`actions/setup-java@v5` sets this in CI).
 

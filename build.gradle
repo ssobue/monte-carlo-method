@@ -1,0 +1,95 @@
+plugins {
+    id 'application'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'pmd'
+    id 'org.sonarqube' version '7.3.1.8318'
+}
+
+group = 'dev.sobue.math'
+version = '1.0.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+application {
+    mainClass = 'dev.sobue.math.MonteCarloMethod'
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:2.0.18'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.5.34'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.1.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 25
+    options.compilerArgs.addAll(['-Xlint:all', '-Werror'])
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    finalizedBy tasks.named('jacocoTestReport')
+}
+
+checkstyle {
+    toolVersion = '12.2.0'
+    config = resources.text.fromArchiveEntry(
+            configurations.checkstyle.filter { it.name.startsWith('checkstyle-') },
+            'google_checks.xml'
+    )
+}
+
+tasks.withType(Checkstyle).configureEach {
+    maxWarnings = 0
+}
+
+pmd {
+    toolVersion = '7.17.0'
+}
+
+jacoco {
+    toolVersion = '0.8.15'
+}
+
+tasks.named('jacocoTestReport', JacocoReport) {
+    dependsOn tasks.named('test')
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('jacocoTestReport')
+}
+
+tasks.register('verify', JavaExec) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = 'Runs all checks and verifies the application entry point.'
+    dependsOn tasks.named('check')
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = application.mainClass
+    args providers.gradleProperty('monteCarloIterations').orElse('1').get()
+}
+
+sonar {
+    properties {
+        property 'sonar.projectKey', 'ssobue_monte-carlo-method'
+        property 'sonar.organization', 'ssobue'
+        property 'sonar.host.url', 'https://sonarcloud.io'
+        property 'sonar.coverage.jacoco.xmlReportPaths',
+                layout.buildDirectory.file('reports/jacoco/test/jacocoTestReport.xml').get().asFile.absolutePath
+        property 'sonar.qualitygate.wait', 'true'
+    }
+}
+
+tasks.named('sonar') {
+    dependsOn tasks.named('jacocoTestReport')
+}

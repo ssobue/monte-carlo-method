@@ -1,4 +1,4 @@
-# https://docs.github.com/en/actions/how-tos/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven
+# https://docs.github.com/en/actions/how-tos/use-cases-and-examples/building-and-testing/building-and-testing-java-with-gradle
 name: Java CI
 
 on:
@@ -24,11 +24,11 @@ jobs:
         with:
           java-version: '25'
           distribution: 'temurin'
-          cache: maven
-      - name: Build with Maven
-        run: mvn --batch-mode verify
+          cache: gradle
+      - name: Build with Gradle
+        run: ./gradlew --no-daemon verify
       - name: Analyze with SonarCloud
         if: ${{ env.SONAR_TOKEN != '' && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn --batch-mode org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: ./gradlew --no-daemon sonar
