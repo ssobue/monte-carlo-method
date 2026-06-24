@@ -16,8 +16,9 @@ monte-carlo-method/
   │   └── dev/sobue/math/MonteCarloMethod.java
   └── .github/         # CI settings (GitHub Actions)
 ```
-GitHub Actions runs `./gradlew --no-daemon verify` with SonarQube Cloud analysis on
-each push and pull request.
+GitHub Actions runs `./gradlew --no-daemon verify` on JDK 25 and JDK 26, builds
+a GraalVM native image on JDK 25, and runs SonarQube Cloud analysis when the
+token is available.
 
 ## Main Components
 ### MonteCarloMethod.java
@@ -29,6 +30,7 @@ each push and pull request.
 ### build.gradle
 - Uses Java 25.
 - Includes Checkstyle and PMD for static analysis.
+- Includes GraalVM Native Build Tools for native image generation.
 - Includes SonarQube Cloud project properties for CI analysis.
 - `verify` executes `MonteCarloMethod` after the standard Gradle checks.
 
@@ -38,12 +40,14 @@ each push and pull request.
      `MonteCarloMethod`.
    - Execute `./gradlew run --args='100000'` to run the app with a custom
      iteration count.
+   - Execute `./gradlew nativeCompile` with GraalVM to build a native executable.
 2. **Development Style**
    - Coding standards are enforced with Checkstyle and PMD. Builds fail if
      violations remain.
 3. **Continuous Integration**
-   - GitHub Actions automatically runs the Gradle build and SonarQube Cloud
-     analysis on each push and pull request.
+   - GitHub Actions automatically runs Gradle builds on JDK 25 and JDK 26, a
+     GraalVM native build, and SonarQube Cloud analysis on each push and pull
+     request.
 4. **Code Size**
    - Only one Java file is included, making it easy to understand the project
      quickly.

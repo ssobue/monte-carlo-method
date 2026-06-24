@@ -3,6 +3,7 @@ plugins {
     id 'checkstyle'
     id 'jacoco'
     id 'pmd'
+    id 'org.graalvm.buildtools.native' version '1.1.2'
     id 'org.sonarqube' version '7.3.1.8318'
 }
 
@@ -17,6 +18,15 @@ java {
 
 application {
     mainClass = 'dev.sobue.math.MonteCarloMethod'
+}
+
+graalvmNative {
+    binaries {
+        main {
+            imageName = 'monte-carlo-method'
+            mainClass = application.mainClass
+        }
+    }
 }
 
 dependencies {

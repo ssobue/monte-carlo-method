@@ -1,12 +1,12 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `build.gradle`: Gradle configuration (Java 25, Checkstyle, PMD, Jacoco, Sonar).
+- `build.gradle`: Gradle configuration (Java 25, Checkstyle, PMD, Jacoco, GraalVM Native Image, Sonar).
 - `settings.gradle`: Gradle project settings and repository policy.
 - `gradle/wrapper/`: Gradle Wrapper files; use `./gradlew` for local and CI builds.
 - `src/main/java/dev/sobue/math/MonteCarloMethod.java`: Main implementation.
 - `src/test/java/...`: JUnit 5 tests (add here).
-- `.github/workflows/main.yaml`: CI runs `./gradlew --no-daemon verify`.
+- `.github/workflows/gradle.yml`: CI runs `./gradlew --no-daemon verify` on multiple JDKs and `nativeCompile` on GraalVM.
 - `build/`: Build artifacts (generated).
 
 ## Build, Test, and Development Commands
@@ -15,6 +15,7 @@
 - Run only tests: `./gradlew test`
 - Package: `./gradlew assemble`
 - Run app during development: `./gradlew run --args='100000'`
+- Build native image with GraalVM: `./gradlew nativeCompile`
 - Static analysis only: `./gradlew checkstyleMain checkstyleTest pmdMain pmdTest`
 
 Prerequisite: Use JDK 25 (`actions/setup-java@v5` sets this in CI).
