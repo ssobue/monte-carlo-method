@@ -21,7 +21,7 @@ jobs:
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up JDK ${{ matrix.java-version }}
@@ -43,7 +43,7 @@ jobs:
   native-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up GraalVM JDK 25
         uses: graalvm/setup-graalvm@v1.5.6
         with:
