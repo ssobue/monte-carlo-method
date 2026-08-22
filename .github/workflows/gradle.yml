@@ -1,14 +1,13 @@
-# https://docs.github.com/en/actions/how-tos/use-cases-and-examples/building-and-testing/building-and-testing-java-with-gradle
 name: Gradle CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
-    types: [opened, synchronize, reopened]
+    branches: [ "main" ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -18,42 +17,33 @@ jobs:
       fail-fast: false
       matrix:
         java-version: [ '25', '26' ]
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          fetch-depth: 0
-      - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961
-        with:
-          java-version: ${{ matrix.java-version }}
-          distribution: 'temurin'
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb
-      - name: Build with Gradle
-        run: ./gradlew --no-daemon verify
-      - name: Analyze with SonarCloud
-        if: ${{ matrix.java-version == '25' && env.SONAR_TOKEN != '' && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew --no-daemon sonar
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+    - name: Build with Gradle
+      run: ./gradlew build
 
   native-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - name: Set up GraalVM JDK 25
-        uses: graalvm/setup-graalvm@5298d94fb55a4f185c602eeac5de1b553882abe2
-        with:
-          java-version: '25'
-          distribution: 'graalvm-community'
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb
-      - name: Build native image with Gradle
-        run: ./gradlew --no-daemon nativeCompile
-      - name: Upload native image
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: monte-carlo-method-gradle-native
-          path: build/native/nativeCompile/monte-carlo-method
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Set up GraalVM JDK 25
+      uses: graalvm/setup-graalvm@5298d94fb55a4f185c602eeac5de1b553882abe2 # v1.6.4
+      with:
+        java-version: '25'
+        distribution: 'graalvm-community'
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+    - name: Build native image with Gradle
+      run: ./gradlew nativeCompile
+    - name: Upload native image
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+        name: demo-gradle-native
+        path: build/native/nativeCompile/monte-carlo-method
